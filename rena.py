@@ -38,6 +38,8 @@ class Rena(Thread):
 
                 if self.gerenciador.contadorRenas == 9:
                     print(' e é a última rena')
+                    self.gerenciador.sem.release()
+                    self.gerenciador.semDespertador.acquire()
                     self.gerenciador.eventoDespertador.set()
                 else:
                     print()

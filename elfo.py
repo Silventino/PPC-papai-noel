@@ -43,6 +43,7 @@ class Elfo(Thread):
 
                 if self.gerenciador.contadorElfos == 3:
                     print('Ultimo elfo, acorda Papai Noel')
+                    self.gerenciador.semDespertador.acquire()
                     self.gerenciador.eventoDespertador.set()
                 else:
                     self.gerenciador.porta.release()
