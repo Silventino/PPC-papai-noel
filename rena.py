@@ -13,18 +13,19 @@ class Rena(Thread):
     
     # Laça uma rena, quando o papai noel acordar
     def serLacada(self):
-        self.gerenciador.sem.acquire()
+        # self.gerenciador.sem.acquire()
 
-        print('Rena {:2d} sendo laçada'.format(self.i))
+        # print('Rena {:2d} sendo laçada'.format(self.i))
         self.gerenciador.contadorRenas -= 1
 
-        self.gerenciador.sem.release()
+        # self.gerenciador.sem.release()
 
     # Organiza a chegada de cada Rena
     def run(self):
         while(True):
             rand = random.random()
-            sleep(rand*5)
+            sleep(random.uniform(1,7))
+            # if(self.gerenciador.sem.acquire(blocking=False)):
             self.gerenciador.sem.acquire()
 
             print('Rena {:2d} chegou'.format(self.i), end='')

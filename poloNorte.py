@@ -4,8 +4,8 @@ from gerenciador import Gerenciador
 # Inicializa o gerenciador do PAULO Norte
 def main():
     g = Gerenciador()
-    g.startRenas()
     g.startElfos()
+    g.startRenas()
 
 
 main()
