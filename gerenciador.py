@@ -49,9 +49,5 @@ class Gerenciador:
     def startElfos(self):
         for i in range(self.numElfos):
             self.elfos[i].start()
-    
-    # def joinRenas(self):
-    #     for i in range(self.numRenas):
-    #         self.renas[i].join()
 
     

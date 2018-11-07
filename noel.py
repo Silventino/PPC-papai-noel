@@ -8,10 +8,8 @@ class Noel(Thread):
     
     # Funcao chamada quando 9 renas estao prontas
     def ajudaRenas(self):
-        # print('\tAjudando renas')
-        # print('\tRenas laças')
 
-        print("\tFoi entregar os brinquedo")
+        print("\tPapai Noel vai laçar as renas e entregar os brinquedos")
         for j in self.gerenciador.filaRenas:
             self.gerenciador.renas[j].serLacada()                       # Lançando cada rena
             # sleep(0.273)
@@ -24,8 +22,6 @@ class Noel(Thread):
         self.gerenciador.filaRenas.clear()                              # Limpa a fila de renas
 
     def ajudaElfos(self):
-        # print('\tAjudando elfos')
-        # print('\tElfos ajudados')
 
         print("\tSe reunindo com os Elfos")
         for j in self.gerenciador.filaElfos:
@@ -35,7 +31,7 @@ class Noel(Thread):
         print("\tVoltou da reunião")
 
         for j in self.gerenciador.filaElfos:
-            self.gerenciador.elfos[j].eventoElfosTrabalhando.set()       # Soltando cada elfo
+            self.gerenciador.elfos[j].eventoElfosEsperando.set()       # Soltando cada elfo
         
         self.gerenciador.porta.release()
         self.gerenciador.filaElfos.clear()                              # Limpa a fila de renas
@@ -48,11 +44,9 @@ class Noel(Thread):
 
             self.gerenciador.sem.acquire()
             numRenas = self.gerenciador.contadorRenas
-            numElfos = self.gerenciador.contadorElfos
 
             if(numRenas == 9):
                 self.ajudaRenas()                                           # Laça as renas
-            # if(numElfos == 3):
             else:
                 self.ajudaElfos()
             self.gerenciador.sem.release()

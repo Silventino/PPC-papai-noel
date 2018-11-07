@@ -3,86 +3,43 @@ from time import sleep
 import random
 
 class Elfo(Thread):
-    # Construtor da thread Rena
+    # Construtor da thread Elfo
     def __init__(self, gerenciador, id):
         self.gerenciador = gerenciador
-        self.eventoElfosTrabalhando = Event()
+        self.eventoElfosEsperando = Event()
         self.id = id
         Thread.__init__(self)
     
-    # Laça uma rena, quando o papai noel acordar
+    # É ajudado pelo papai noel quando ele acorda
     def serAjudado(self):
-        # self.gerenciador.sem.acquire()
-
-        # print('Elfo {:2d} sendo ajudado'.format(self.id))
         self.gerenciador.contadorElfos -= 1
-
-        # self.gerenciador.sem.release()
 
     # Organiza a chegada de cada Elfo
     def run(self):
         while(True):
-            # sleep(0.5)
-            rand = random.random()
-            # sleep(rand*5)
-            sleep(random.uniform(1,7))
 
+            # cada elfo demora um tempo entre 1 e 20s para pedir ajuda ao papai noel
+            sleep(random.uniform(1,20))
 
-            # if(self.gerenciador.porta.acquire(blocking=False) and self.gerenciador.sem.acquire(blocking=False)):
-            self.gerenciador.porta.acquire()
-            self.gerenciador.sem.acquire()
+            self.gerenciador.porta.acquire()        # fecha a porta
+            self.gerenciador.sem.acquire()          # fecha o semaforo
 
             print('Elfo {:2d} chegou'.format(self.id))
 
-            # print('Elfos esperando: {}'.format(self.gerenciador.contadorElfos))
-
-            if self.gerenciador.contadorElfos < 3:
+            if self.gerenciador.contadorElfos < 3:      # se ainda não há 3 elfos esperando
                 # self.gerenciador.sem.acquire()
                 self.gerenciador.contadorElfos += 1
-                self.gerenciador.filaElfos.append(self.id)
+                self.gerenciador.filaElfos.append(self.id)  # entra na fila
 
-                if self.gerenciador.contadorElfos == 3:
+                if self.gerenciador.contadorElfos == 3:         # se for o terceiro elfo, acorda o papai noel
                     print('Ultimo elfo, acorda Papai Noel')
                     self.gerenciador.semDespertador.acquire()
                     self.gerenciador.eventoDespertador.set()
                 else:
-                    self.gerenciador.porta.release()
-            # else:
-                # print('Fila cheia')
+                    self.gerenciador.porta.release()        # libera a porta somente se a fila de elfos nao estiver cheia
 
-            # print('filaElfos: {}'.format(self.gerenciador.filaElfos))
+            self.gerenciador.sem.release()      
 
-            self.gerenciador.sem.release()
-
-            # print()
-            self.eventoElfosTrabalhando.clear()
-            self.eventoElfosTrabalhando.wait()
-            
-
-
-
-
-
-
-
-            # if self.gerenciador.contadorElfos == 3:
-            #     print("entreiiiii")
-            #     print('3 elfos esperando: {}'.format(self.gerenciador.filaElfos))
-            # else:
-            #     self.gerenciador.contadorElfos += 1
-            #     self.gerenciador.filaElfos.append(self.id)
-            #     self.gerenciador.porta.release()
-
-            #     if self.gerenciador.contadorElfos == 3:
-            #         print(' terceiro elfo')
-            #         self.gerenciador.eventoDespertador.set()
-            #     else:
-            #         print()
-            
-            # print(self.gerenciador.filaElfos)
-                    
-            # self.gerenciador.sem.release()
-
-            # self.eventoElfosTrabalhando.clear()
-            # self.eventoElfosTrabalhando.wait()
+            self.eventoElfosEsperando.clear()
+            self.eventoElfosEsperando.wait()
             

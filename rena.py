@@ -13,36 +13,26 @@ class Rena(Thread):
     
     # Laça uma rena, quando o papai noel acordar
     def serLacada(self):
-        # self.gerenciador.sem.acquire()
-
-        # print('Rena {:2d} sendo laçada'.format(self.i))
         self.gerenciador.contadorRenas -= 1
-
-        # self.gerenciador.sem.release()
 
     # Organiza a chegada de cada Rena
     def run(self):
         while(True):
-            rand = random.random()
-            sleep(random.uniform(1,7))
-            # if(self.gerenciador.sem.acquire(blocking=False)):
-            self.gerenciador.sem.acquire()
+            sleep(random.uniform(1,7))                                          # cada rena demora entre 1 e 7s para chegar
+            self.gerenciador.sem.acquire()                                      # fecha o semaforo    
 
             print('Rena {:2d} chegou'.format(self.i), end='')
 
-            if self.gerenciador.contadorRenas == 9:
-                print('9 renas prontas: {}'.format(self.gerenciador.filaRenas))
-            else:
-                self.gerenciador.contadorRenas += 1
-                self.gerenciador.filaRenas.append(self.i)
+            self.gerenciador.contadorRenas += 1
+            self.gerenciador.filaRenas.append(self.i)                           # se coloca na fila
 
-                if self.gerenciador.contadorRenas == 9:
-                    print(' e é a última rena')
-                    self.gerenciador.sem.release()
-                    self.gerenciador.semDespertador.acquire()
-                    self.gerenciador.eventoDespertador.set()
-                else:
-                    print()
+            if self.gerenciador.contadorRenas == 9:                             # se for a ultima rena, acorda o papai noel
+                print(' e é a última rena')
+                self.gerenciador.sem.release()
+                self.gerenciador.semDespertador.acquire()
+                self.gerenciador.eventoDespertador.set()
+            else:
+                print()
 
             self.gerenciador.sem.release()
             self.eventoRenaTrabalhando.clear()
